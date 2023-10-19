@@ -8,8 +8,8 @@ For more info see file *readme.md*
 var fs = require('fs');
 var os = require('os');
 
-var puppeteer = require(os.homedir() + '\\node_modules\\puppeteer');
-var screenshotsDefaultFolder = require('path').resolve(__dirname, '..') + '\\screenshots';
+var puppeteer = require('puppeteer');
+var screenshotsDefaultFolder = './screenshots';
 var listOfNotProcessed = 'notProcessed.log';
 var whereUrls = 'urls.txt'; if (process.argv[2]) { whereUrls = process.argv[2]; }
 var delayBeforeProceeding = 1500;
@@ -86,7 +86,7 @@ var list = fs.readFileSync(whereUrls, encoding,
                                    .replace("\uf7644c", "")
 
             var lineUrl = "";
-            var lineTit = screenshotsDefaultFolder + '\\~flatUrl~.*';
+            var lineTit = screenshotsDefaultFolder + '/~flatUrl~.*';
             var lineRes = '1280*full';
             var lineExt = 'png';
 
@@ -125,7 +125,7 @@ var list = fs.readFileSync(whereUrls, encoding,
                lineTit = lineTit.replace('~flatUrl~', lineUrlFlat);
             }
 
-            var getPath = lineTit.substring(0, lineTit.lastIndexOf("\\"));
+            var getPath = lineTit.substring(0, lineTit.lastIndexOf("/"));
             if (!fs.existsSync(getPath)) { fs.mkdirSync(getPath); }
 
             var subLineRes = lineRes.split('\*');

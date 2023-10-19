@@ -1,1 +1,0 @@
-start /min node "ee.screen.js"
