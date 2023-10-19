@@ -1,0 +1,4 @@
+﻿https://github.com
+txt,pdf;https://www.bbc.co.uk/news
+https://hp.com/;jpg,Lpdf;1024*768
+1920*full;"C:\My Screenshots\123.*";https://www.ebay.com/;png

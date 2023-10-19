@@ -1,5 +1,5 @@
 /***************************************************************************************************
-ee.Screen // version 20201108
+ee.Screen // version 20220426
 Takes screenshots of web pages according to a list of URLs
 Supports various resolutions and multiple formats - JPG, PDF, PNG and TXT
 For more info see file *readme.md*
@@ -12,8 +12,8 @@ var puppeteer = require(os.homedir() + '\\node_modules\\puppeteer');
 var screenshotsDefaultFolder = require('path').resolve(__dirname, '..') + '\\screenshots';
 var listOfNotProcessed = 'notProcessed.log';
 var whereUrls = 'urls.txt'; if (process.argv[2]) { whereUrls = process.argv[2]; }
-var delayBeforeScreening = 1500;
-var pageLoadTimeout = 15000;
+var delayBeforeProceeding = 1500;
+var pageLoadTimeout = 60000;
 var devicePixelRatio = 1;
 
 var opSys = process.platform;
@@ -100,7 +100,7 @@ var list = fs.readFileSync(whereUrls, encoding,
                   { lineTit = "" + subLines[field].split("\"").join(""); continue; }
 
                if (subLines[field].includes('/'))
-                  { lineUrl = "" + subLines[field]; continue; }
+                  { lineUrl = "" + subLines[field]; console.log('Processing ' + lineUrl); continue; }
 
                if (subLines[field].includes('*') && !subLines[field].includes('"'))
                   { lineRes = "" + subLines[field]; continue; }
@@ -156,7 +156,7 @@ var list = fs.readFileSync(whereUrls, encoding,
                                         height: shotHeight,
                                         deviceScaleFactor: devicePixelRatio });
                await page.goto(lineUrl, { waitUntil: 'networkidle2', timeout: pageLoadTimeout });
-               await sleep(delayBeforeScreening);
+               await sleep(delayBeforeProceeding);
 
                if (toJpg == 1 && jpgExists == 0 && subLineRes[1] == "full")
                {
