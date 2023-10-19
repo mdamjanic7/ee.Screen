@@ -1,0 +1,14 @@
+{
+  "name": "ee.screen",
+  "version": "1.0.0",
+  "description": "This script takes screenshots of web pages according to a list of URLs. Supports various resolutions and multiple formats - JPG, PDF, PNG and TXT",
+  "main": "ee.screen.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^21.3.8"
+  }
+}
