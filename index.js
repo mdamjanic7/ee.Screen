@@ -93,7 +93,7 @@ async function main() {
     await takeScreenshots(browser, desktopScreenshotsFolder, desktopDevicePixelRatio, desktopShotHeight, desktopShotWidth, desktopResizeHeight, desktopResizeWidth);
 
     console.log("*** MOBILE ***")
-    await takeScreenshots(browser, mobileScreenshotsFolder, mobileDevicePixelRatio, mobileShotHeight, mobileShotWidth);
+    await takeScreenshots(browser, mobileScreenshotsFolder, mobileDevicePixelRatio, mobileShotHeight, mobileShotWidth, mobileResizeHeight, mobileResizeWidth);
     
     await browser.close();
 }
