@@ -1,14 +1,19 @@
 const fs = require('fs');
 const puppeteer = require('puppeteer');
+const sharp = require('sharp');
 
-const delayBeforeProceeding = 3000;
+const delayBeforeProceeding = 2500;
 const pageLoadTimeout = 60000;
-const desktopDevicePixelRatio = 1;
-const desktopShotHeight = 700;
-const desktopShotWidth = 980;
+const desktopDevicePixelRatio = 2;
+const desktopShotHeight = 900;
+const desktopShotWidth = 1260;
+const desktopResizeHeight = 700;
+const desktopResizeWidth = 980;
 const mobileDevicePixelRatio = 1;
 const mobileShotHeight = 1600;
 const mobileShotWidth = 720;
+const mobileResizeHeight = 1600;
+const mobileResizeWidth = 720;
 
 const baseURL = "https://drafts.editmysite.com/theme-preview/"
 const locales = [
@@ -86,7 +91,7 @@ async function main() {
     const browser = await puppeteer.launch(pupOptions);
 
     console.log("*** DESKTOP ***")
-    await takeScreenshots(browser, desktopScreenshotsFolder, desktopDevicePixelRatio, desktopShotHeight, desktopShotWidth);
+    await takeScreenshots(browser, desktopScreenshotsFolder, desktopDevicePixelRatio, desktopShotHeight, desktopShotWidth, desktopResizeHeight, desktopResizeWidth);
 
     console.log("*** MOBILE ***")
     await takeScreenshots(browser, mobileScreenshotsFolder, mobileDevicePixelRatio, mobileShotHeight, mobileShotWidth);
@@ -117,7 +122,7 @@ function generateAllURLs() {
     console.log();
 }
 
-async function takeScreenshots(browser, folderPath, devicePixelRatio, shotHeight, shotWidth) {
+async function takeScreenshots(browser, folderPath, devicePixelRatio, shotHeight, shotWidth, resizeHeight, resizeWidth) {
 
     // if (!fs.existsSync(folderPath)){
     //     fs.mkdirSync(folderPath, { recursive: true });
@@ -132,7 +137,7 @@ async function takeScreenshots(browser, folderPath, devicePixelRatio, shotHeight
 
         for (u in urls) {
             let url = urls[u];
-            await takeScreenshot(browser, url, langFolderPath, devicePixelRatio, shotHeight, shotWidth);
+            await takeScreenshot(browser, url, langFolderPath, devicePixelRatio, shotHeight, shotWidth, resizeHeight, resizeWidth);
         }
     }
 
@@ -140,7 +145,7 @@ async function takeScreenshots(browser, folderPath, devicePixelRatio, shotHeight
     
 }
 
-async function takeScreenshot(browser, url, path, devicePixelRatio, shotHeight, shotWidth) {
+async function takeScreenshot(browser, url, path, devicePixelRatio, shotHeight, shotWidth, resizeHeight, resizeWidth) {
 
     console.log(url);
     let themeName = url.split("/")[4].split("?")[0];
@@ -160,8 +165,14 @@ async function takeScreenshot(browser, url, path, devicePixelRatio, shotHeight, 
     await sleep(delayBeforeProceeding/2);
     await page.reload();
     await sleep(delayBeforeProceeding/2);
-    await page.screenshot({ 
-        path: path + "/" + themeName + ".png",
-        fullPage: true 
+
+    let ss = await page.screenshot({
+        fullPage: true,
+        type: "jpeg"
     });
+    await sharp(ss)
+        .resize(resizeWidth, resizeHeight)
+        .jpeg({ mozjpeg: true })
+        .toFile(path + "/" + themeName + ".jpg", (err, info) => { });
+
 }
