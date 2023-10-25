@@ -9,9 +9,9 @@ const desktopShotHeight = 900;
 const desktopShotWidth = 1260;
 const desktopResizeHeight = 700;
 const desktopResizeWidth = 980;
-const mobileDevicePixelRatio = 1;
-const mobileShotHeight = 1600;
-const mobileShotWidth = 720;
+const mobileDevicePixelRatio = 2;
+const mobileShotHeight = 800;
+const mobileShotWidth = 360;
 const mobileResizeHeight = 1600;
 const mobileResizeWidth = 720;
 
