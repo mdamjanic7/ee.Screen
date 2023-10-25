@@ -12,15 +12,50 @@ const mobileShotWidth = 720;
 
 const baseURL = "https://drafts.editmysite.com/theme-preview/"
 const locales = [
+    "ca_ES",
+    "en_AU",
+    "en_CA",
+    "en_GB",
+    "en_IE",
     "en_US",
+    "es_ES",
     "es_US",
-    "fr_FR"
+    "fr_CA",
+    "fr_FR",
+    "ja_JP",
 ]
 
 const themes = [
+    "all-day-clay",
+    "alluring-decor",
+    "bartolomo-wines",
+    "brass-wolf-brewery",
+    "free-appointments",
+    "free-order-online",
+    "free-shop-all",
+    "green-trowel-theme",
+    "iris-et-onyx",
+    "joy-bakeshop",
+    "kale-n-things",
+    "lavenderia-wines",
     "leaf-lemon",
-    "the-clothiers"
-]
+    "olive-gloria",
+    "olympio-restaurant",
+    "ordering-leaf-lemon?location=11edfa7f18d8ab59870fac1f6bbba82c", // Location ID needed to avoid the location modal
+    "ordering-olympio?location=11edd266af4665ef9f8bac1f6bbbd01e",
+    "ordering-youngs-place?location=11ee16e8067a3e3e9387ac1f6bbbd01e",
+    "sala-home-decor",
+    "salt-sea-market",
+    "seed-sun-sprout",
+    "shape-and-form",
+    "standalone-free-order-online",
+    "stem-water",
+    "stevie-marcel",
+    "studio-clotilde",
+    "the-clothiers",
+    "wild-river",
+    "youngs-place"
+ ]
 
 let allURLs = {};
 
@@ -72,7 +107,11 @@ function generateAllURLs() {
 
         for (t in themes) {
             let theme = themes[t];
-            allURLs[locale].push(baseURL + theme + "?lang=" + locale);
+            let symbol = "?";
+            if (theme.includes("?")) {
+                symbol = "&";
+            }
+            allURLs[locale].push(baseURL + theme + symbol + "lang=" + locale);
         }
     }
     console.log();
