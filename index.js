@@ -2,7 +2,7 @@ const fs = require('fs');
 const puppeteer = require('puppeteer');
 const sharp = require('sharp');
 
-const delayBeforeProceeding = 2500;
+const delayBeforeProceeding = 4000;
 const pageLoadTimeout = 60000;
 const desktopDevicePixelRatio = 2;
 const desktopShotHeight = 900;
@@ -161,9 +161,7 @@ async function takeScreenshot(browser, url, path, devicePixelRatio, shotHeight, 
         waitUntil: 'networkidle2',
         timeout: pageLoadTimeout
     });
-    await sleep(delayBeforeProceeding/2);
-    await page.reload();
-    await sleep(delayBeforeProceeding/2);
+    await sleep(delayBeforeProceeding);
 
     let ss = await page.screenshot({
         fullPage: true,
