@@ -1,0 +1,61 @@
+{
+    "delayBeforeProceeding": 4000,
+    "pageLoadTimeout": 60000,
+    "desktop": {
+        "devicePixelRatio": 2,
+        "shotHeight": 1260,
+        "shotWidth": 900,
+        "resizeHeight": 980,
+        "resizeWidth": 700
+    },
+    "mobile": {
+        "devicePixelRatio": 2,
+        "shotHeight": 800,
+        "shotWidth": 360,
+        "resizeHeight": 1600,
+        "resizeWidth": 720
+    },
+    "locales" : [
+        "ca_ES",
+        "en_AU",
+        "en_CA",
+        "en_GB",
+        "en_IE",
+        "en_US",
+        "es_ES",
+        "es_US",
+        "fr_CA",
+        "fr_FR",
+        "ja_JP"
+    ],
+    "themes": [
+        "all-day-clay",
+        "alluring-decor",
+        "bartolomo-wines",
+        "brass-wolf",
+        "free-appointments",
+        "free-order-online",
+        "free-shop-all",
+        "green-trowel",
+        "iris-et-onyx",
+        "joy-bakeshop",
+        "kale-n-things",
+        "lavenderia-wine",
+        "leaf-lemon",
+        "olive-gloria",
+        "olympio",
+        "ordering-leaf-lemon?location=11edfa7f18d8ab59870fac1f6bbba82c",
+        "ordering-olympio?location=11edd266af4665ef9f8bac1f6bbbd01e",
+        "ordering-youngs-place?location=11ee16e8067a3e3e9387ac1f6bbbd01e",
+        "sala",
+        "salt-sea-market",
+        "seed-sun-sprout",
+        "shape-and-form",
+        "free-order-online",
+        "stem-water",
+        "stevie-marcel",
+        "studio-clotilde",
+        "the-clothiers",
+        "youngs-place"
+    ]
+}

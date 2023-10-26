@@ -1,72 +1,14 @@
+const { error } = require('console');
 const fs = require('fs');
 const puppeteer = require('puppeteer');
 const sharp = require('sharp');
 
-const delayBeforeProceeding = 4000;
-const pageLoadTimeout = 60000;
-const desktopDevicePixelRatio = 2;
-const desktopShotHeight = 900;
-const desktopShotWidth = 1260;
-const desktopResizeHeight = 700;
-const desktopResizeWidth = 980;
-const mobileDevicePixelRatio = 2;
-const mobileShotHeight = 800;
-const mobileShotWidth = 360;
-const mobileResizeHeight = 1600;
-const mobileResizeWidth = 720;
-
 const baseURL = "https://drafts.editmysite.com/theme-preview/"
-const locales = [
-    "ca_ES",
-    "en_AU",
-    "en_CA",
-    "en_GB",
-    "en_IE",
-    "en_US",
-    "es_ES",
-    "es_US",
-    "fr_CA",
-    "fr_FR",
-    "ja_JP",
-]
+const desktopScreenshotsFolder = './screenshots/desktop';
+const mobileScreenshotsFolder = './screenshots/mobile';
+const settingsPath = "./settings.json"
 
-const themes = [
-    "all-day-clay",
-    "alluring-decor",
-    "bartolomo-wines",
-    "brass-wolf",
-    "free-appointments",
-    "free-order-online",
-    "free-shop-all",
-    "green-trowel",
-    "iris-et-onyx",
-    "joy-bakeshop",
-    "kale-n-things",
-    "lavenderia-wine",
-    "leaf-lemon",
-    "olive-gloria",
-    "olympio",
-    "ordering-leaf-lemon?location=11edfa7f18d8ab59870fac1f6bbba82c", // Location ID needed to avoid the location modal
-    "ordering-olympio?location=11edd266af4665ef9f8bac1f6bbbd01e",
-    "ordering-youngs-place?location=11ee16e8067a3e3e9387ac1f6bbbd01e",
-    "sala",
-    "salt-sea-market",
-    "seed-sun-sprout",
-    "shape-and-form",
-    "free-order-online",
-    "stem-water",
-    "stevie-marcel",
-    "studio-clotilde",
-    "the-clothiers",
-    "youngs-place"
- ]
-
-let allURLs = {};
-
-var desktopScreenshotsFolder = './screenshots/desktop';
-var mobileScreenshotsFolder = './screenshots/mobile';
-
-var customUserAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36';
+const customUserAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36';
 
 const pupArgs = [
     '--no-sandbox',
@@ -80,20 +22,25 @@ const pupOptions = {
     ignoreHTTPSErrors: true 
 }
 
+var allURLs = {};
+var settings = {};
+
+
 if (require.main === module) {
     main();
 }
 
 async function main() {
+    readSettings();
     generateAllURLs();
 
     const browser = await puppeteer.launch(pupOptions);
 
     console.log("*** DESKTOP ***")
-    await takeScreenshots(browser, desktopScreenshotsFolder, desktopDevicePixelRatio, desktopShotHeight, desktopShotWidth, desktopResizeHeight, desktopResizeWidth);
+    await takeScreenshots(browser, desktopScreenshotsFolder, settings.desktop.devicePixelRatio, settings.desktop.shotHeight, settings.desktop.shotWidth,settings.desktop.resizeHeight, settings.desktop.resizeWidth);
 
     console.log("*** MOBILE ***")
-    await takeScreenshots(browser, mobileScreenshotsFolder, mobileDevicePixelRatio, mobileShotHeight, mobileShotWidth, mobileResizeHeight, mobileResizeWidth);
+    await takeScreenshots(browser, mobileScreenshotsFolder, settings.mobile.devicePixelRatio, settings.mobile.shotHeight, settings.mobile.shotWidth, settings.mobile.resizeHeight, settings.mobile.resizeWidth);
     
     await browser.close();
 }
@@ -105,12 +52,12 @@ function sleep(ms) {
 }
 
 function generateAllURLs() {
-    for (l in locales) {
-        let locale = locales[l];
+    for (l in settings.locales) {
+        let locale = settings.locales[l];
         allURLs[locale] = [];
 
-        for (t in themes) {
-            let theme = themes[t];
+        for (t in settings.themes) {
+            let theme = settings.themes[t];
             let symbol = "?";
             if (theme.includes("?")) {
                 symbol = "&";
@@ -122,10 +69,6 @@ function generateAllURLs() {
 }
 
 async function takeScreenshots(browser, folderPath, devicePixelRatio, shotHeight, shotWidth, resizeHeight, resizeWidth) {
-
-    // if (!fs.existsSync(folderPath)){
-    //     fs.mkdirSync(folderPath, { recursive: true });
-    // }
 
     for (const [lang, urls] of Object.entries(allURLs)) {
         console.log("Processing " + lang);
@@ -139,8 +82,6 @@ async function takeScreenshots(browser, folderPath, devicePixelRatio, shotHeight
             await takeScreenshot(browser, url, langFolderPath, devicePixelRatio, shotHeight, shotWidth, resizeHeight, resizeWidth);
         }
     }
-
-
     
 }
 
@@ -159,9 +100,9 @@ async function takeScreenshot(browser, url, path, devicePixelRatio, shotHeight, 
     });
     await page.goto(url, {
         waitUntil: 'networkidle2',
-        timeout: pageLoadTimeout
+        timeout: settings.pageLoadTimeout
     });
-    await sleep(delayBeforeProceeding);
+    await sleep(settings.delayBeforeProceeding);
 
     let ss = await page.screenshot({
         fullPage: true,
@@ -172,4 +113,69 @@ async function takeScreenshot(browser, url, path, devicePixelRatio, shotHeight, 
         .jpeg({ mozjpeg: true })
         .toFile(path + "/" + themeName + ".jpg", (err, info) => { });
 
+}
+
+async function readSettings() {
+    let data = fs.readFileSync(settingsPath);
+    settings = JSON.parse(data);
+
+    if (!settings?.delayBeforeProceeding) {
+        error.log("delayBeforeProceeding is missing");
+        process.exit(1)
+    }
+    if (!settings?.pageLoadTimeout) {
+        error.log("pageLoadTimeout is missing");
+        process.exit(1)
+    }
+
+    if (!settings?.desktop?.devicePixelRatio) {
+        error.log("desktopDevicePixelRatio is missing");
+        process.exit(1)
+    }
+    if (!settings?.desktop?.shotHeight) {
+        error.log("desktopShotHeight is missing");
+        process.exit(1)
+    }
+    if (!settings?.desktop?.shotWidth) {
+        error.log("desktopShotWidth is missing");
+        process.exit(1)
+    }
+    if (!settings?.desktop?.resizeHeight) {
+        error.log("desktopResizeHeight is missing");
+        process.exit(1)
+    }
+    if (!settings?.desktop?.resizeWidth) {
+        error.log("desktopResizeWidth is missing");
+        process.exit(1)
+    }
+
+    if (!settings?.mobile?.devicePixelRatio) {
+        error.log("mobileDevicePixelRatio is missing");
+        process.exit(1)
+    }
+    if (!settings?.mobile?.shotHeight) {
+        error.log("mobileShotHeight is missing");
+        process.exit(1)
+    }
+    if (!settings?.mobile?.shotWidth) {
+        error.log("mobileShotWidth is missing");
+        process.exit(1)
+    }
+    if (!settings?.mobile?.resizeHeight) {
+        error.log("mobileResizeHeight is missing");
+        process.exit(1)
+    }
+    if (!settings?.mobile?.resizeWidth) {
+        error.log("mobileResizeWidth is missing");
+        process.exit(1)
+    }
+
+    if (!settings?.locales) {
+        error.log("locales are missing");
+        process.exit(1)
+    }
+    if (!settings?.themes) {
+        error.log("themes are missing");
+        process.exit(1)
+    }
 }
