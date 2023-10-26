@@ -11,3 +11,4 @@ This script will take screenshots of all Square Online themes in all locales for
 
 # Gotchas 
 * Sometimes websites won't load in the alloted time, resulting in a white screenshots. Re-running the script with only the relevant theme names and locales usually fixes the issue. 
+* Adding the `?location=xxx`` parameter to a theme that uses Order Online page as home will prevent the location selection modal from appearing in the screenshot.
