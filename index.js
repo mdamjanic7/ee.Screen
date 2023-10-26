@@ -120,62 +120,62 @@ async function readSettings() {
     settings = JSON.parse(data);
 
     if (!settings?.delayBeforeProceeding) {
-        error.log("delayBeforeProceeding is missing");
+        console.error("delayBeforeProceeding is missing");
         process.exit(1)
     }
     if (!settings?.pageLoadTimeout) {
-        error.log("pageLoadTimeout is missing");
+        console.error("pageLoadTimeout is missing");
         process.exit(1)
     }
 
     if (!settings?.desktop?.devicePixelRatio) {
-        error.log("desktopDevicePixelRatio is missing");
+        console.error("desktopDevicePixelRatio is missing");
         process.exit(1)
     }
     if (!settings?.desktop?.shotHeight) {
-        error.log("desktopShotHeight is missing");
+        console.error("desktopShotHeight is missing");
         process.exit(1)
     }
     if (!settings?.desktop?.shotWidth) {
-        error.log("desktopShotWidth is missing");
+        console.error("desktopShotWidth is missing");
         process.exit(1)
     }
     if (!settings?.desktop?.resizeHeight) {
-        error.log("desktopResizeHeight is missing");
+        console.error("desktopResizeHeight is missing");
         process.exit(1)
     }
     if (!settings?.desktop?.resizeWidth) {
-        error.log("desktopResizeWidth is missing");
+        console.error("desktopResizeWidth is missing");
         process.exit(1)
     }
 
     if (!settings?.mobile?.devicePixelRatio) {
-        error.log("mobileDevicePixelRatio is missing");
+        console.error("mobileDevicePixelRatio is missing");
         process.exit(1)
     }
     if (!settings?.mobile?.shotHeight) {
-        error.log("mobileShotHeight is missing");
+        console.error("mobileShotHeight is missing");
         process.exit(1)
     }
     if (!settings?.mobile?.shotWidth) {
-        error.log("mobileShotWidth is missing");
+        console.error("mobileShotWidth is missing");
         process.exit(1)
     }
     if (!settings?.mobile?.resizeHeight) {
-        error.log("mobileResizeHeight is missing");
+        console.error("mobileResizeHeight is missing");
         process.exit(1)
     }
     if (!settings?.mobile?.resizeWidth) {
-        error.log("mobileResizeWidth is missing");
+        console.error("mobileResizeWidth is missing");
         process.exit(1)
     }
 
     if (!settings?.locales) {
-        error.log("locales are missing");
+        console.error("locales are missing");
         process.exit(1)
     }
     if (!settings?.themes) {
-        error.log("themes are missing");
+        console.error("themes are missing");
         process.exit(1)
     }
 }
