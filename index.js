@@ -35,14 +35,25 @@ async function main() {
     generateAllURLs();
 
     const browser = await puppeteer.launch(pupOptions);
+    if (settings.desktop.takeScreenshots) {
+        console.log("*** DESKTOP ***")
+        await takeScreenshots(browser, desktopScreenshotsFolder, settings.desktop.devicePixelRatio, settings.desktop.shotHeight, settings.desktop.shotWidth,settings.desktop.resizeHeight, settings.desktop.resizeWidth);
+    }
+    else {
+        console.log("*** Skipping DESKTOP ***")
+    }
 
-    console.log("*** DESKTOP ***")
-    await takeScreenshots(browser, desktopScreenshotsFolder, settings.desktop.devicePixelRatio, settings.desktop.shotHeight, settings.desktop.shotWidth,settings.desktop.resizeHeight, settings.desktop.resizeWidth);
+    if (settings.mobile.takeScreenshots) {
 
-    console.log("*** MOBILE ***")
-    await takeScreenshots(browser, mobileScreenshotsFolder, settings.mobile.devicePixelRatio, settings.mobile.shotHeight, settings.mobile.shotWidth, settings.mobile.resizeHeight, settings.mobile.resizeWidth);
-    
+        console.log("*** MOBILE ***")
+        await takeScreenshots(browser, mobileScreenshotsFolder, settings.mobile.devicePixelRatio, settings.mobile.shotHeight, settings.mobile.shotWidth, settings.mobile.resizeHeight, settings.mobile.resizeWidth);
+    }
+    else {
+        console.log("*** Skipping MOBILE ***")
+    }
+
     await browser.close();
+    console.log("Finished")
 }
 
 

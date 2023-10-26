@@ -2,6 +2,7 @@
     "delayBeforeProceeding": 4000,
     "pageLoadTimeout": 60000,
     "desktop": {
+        "takeScreenshots": true,
         "devicePixelRatio": 2,
         "shotHeight": 1260,
         "shotWidth": 900,
@@ -9,6 +10,7 @@
         "resizeWidth": 700
     },
     "mobile": {
+        "takeScreenshots": true,
         "devicePixelRatio": 2,
         "shotHeight": 800,
         "shotWidth": 360,
