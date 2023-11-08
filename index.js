@@ -19,7 +19,8 @@ const pupArgs = [
     '--ignore-certificate-errors-spki-list'];
 const pupOptions = { 
     pupArgs, 
-    ignoreHTTPSErrors: true 
+    ignoreHTTPSErrors: true,
+    headless: "new"
 }
 
 var allURLs = {};
@@ -110,13 +111,13 @@ async function takeScreenshot(browser, url, path, devicePixelRatio, shotHeight, 
         deviceScaleFactor: devicePixelRatio
     });
     await page.goto(url, {
-        waitUntil: 'networkidle2',
+        waitUntil: 'networkidle0',
         timeout: settings.pageLoadTimeout
     });
+
     await sleep(settings.delayBeforeProceeding);
 
     let ss = await page.screenshot({
-        fullPage: true,
         type: "jpeg"
     });
     await sharp(ss)
